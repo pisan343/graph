@@ -41,22 +41,22 @@ Q: -1 for each clang-format warning, min -3: ENTER_NUMBER
 
 Q: Runs and produces correct output: ENTER_NUMBER
 
-- Try running "./a.out cities.txt Sea" and other examples
-- -2 if the output is not sorted by weight
+- Try running "./a.out". assert statement should test the code
 
 Q: -2 for any detected memory leak: ENTER_NUMBER
 
 - Check under *5. No memory leaks using g++*
 - Check under *6. No memory leaks using valgrind*
 
-Q: Do the tests sufficiently test the code: ENTER_NUMBER
+Q: Do the tests sufficiently test the code, min -6: ENTER_NUMBER
 
-- -1 for each large block of code not executed
+- All public functions should be called at least once.
 - -2 for each function that is never called when testing
 - Check under *7. Tests have full code coverage* paying attention to *The lines below were never executed*
 
-Q: Are all functions in .h and .cpp file documents (min -3): ENTER_NUMBER
+Q: Are all functions in .h and .cpp file documented (min -3): ENTER_NUMBER
 
+- You need at least 1-line of comments
 - -1 for each function not documented
 
 Q: Total points: ADD_ALL_POINTS
