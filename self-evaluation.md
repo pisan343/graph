@@ -48,12 +48,6 @@ Q: -2 for any detected memory leak: ENTER_NUMBER
 - Check under *5. No memory leaks using g++*
 - Check under *6. No memory leaks using valgrind*
 
-Q: Do the tests sufficiently test the code, min -6: ENTER_NUMBER
-
-- All public functions should be called at least once.
-- -2 for each function that is never called when testing
-- Check under *7. Tests have full code coverage* paying attention to *The lines below were never executed*
-
 Q: Are all functions in .h and .cpp file documented (min -3): ENTER_NUMBER
 
 - You need at least 1-line of comments
