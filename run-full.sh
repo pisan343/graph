@@ -21,36 +21,6 @@ if hash id 2>/dev/null; then
   id
 fi
 
-# If we are running as a GitHub action, install programs
-GITHUB_MACHINE='Linux fv-az'
-
-if [[ $MACHINE == *"${GITHUB_MACHINE}"* ]]; then
-  echo "====================================================="
-  echo "Running as a GitHub action, attempting to install programs"
-  echo "====================================================="
-  sudo apt-get update
-  sudo apt-get install llvm clang-tidy valgrind
-fi
-
-# If we are running on CSSLAB and
-# clang-tidy is not active, print a message
-CSSLAB_MACHINE='Linux csslab'
-
-CLANG_TIDY_EXE='/opt/rh/llvm-toolset-7.0/root/bin/clang-tidy'
-
-if [[ $MACHINE == *"${CSSLAB_MACHINE}"* ]]; then
-    if ! hash clang-tidy 2>/dev/null && [ -e "${CLANG_TIDY_EXE}" ] ; then
-        echo "====================================================="
-        echo "ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR "
-        echo "clang-tidy NOT found in path (but is in $CLANG_TIDY_EXE )"
-        echo "Add the following command to ~/.bashrc file"
-        echo "     source scl_source enable llvm-toolset-7.0"
-        echo "You can add the command by executing the following line"
-        echo "     echo \"source scl_source enable llvm-toolset-7.0\" >> ~/.bashrc"
-        echo "====================================================="
-        exit
-    fi
-fi
 
 # delete a.out, do not give any errors if it does not exist
 rm ./a.out 2>/dev/null
@@ -60,7 +30,7 @@ echo "1. Compiles without warnings with -Wall -Wextra flags"
 echo "   FIX all warnings if there are any shown below"
 echo "====================================================="
 
-g++ -g -std=c++11 -Wall -Wextra -Wno-sign-compare *.cpp
+g++ -g -Wall -Wextra -Wno-sign-compare *.cpp
 
 echo "====================================================="
 echo "2. Runs and produces correct output"
@@ -76,7 +46,7 @@ echo "   FIX all warnings if there are any shown below"
 echo "====================================================="
 
 if hash clang-tidy 2>/dev/null; then
-  clang-tidy *.cpp -- -std=c++11
+  clang-tidy *.cpp --
 else
   echo "WARNING: clang-tidy not available."
 fi
@@ -105,7 +75,7 @@ echo "====================================================="
 
 rm ./a.out 2>/dev/null
 
-g++ -std=c++11 -fsanitize=address -fno-omit-frame-pointer -g *.cpp
+g++ -fsanitize=address -fno-omit-frame-pointer -g *.cpp
 # Execute program
 $EXEC_PROGRAM > /dev/null 2> /dev/null
 
@@ -119,7 +89,7 @@ echo "====================================================="
 rm ./a.out 2>/dev/null
 
 if hash valgrind 2>/dev/null; then
-  g++ -g -std=c++11 *.cpp
+  g++ -g *.cpp
   # redirect program output to /dev/null will running valgrind
   valgrind --log-file="valgrind-output.txt" $EXEC_PROGRAM > /dev/null 2>/dev/null
   cat valgrind-output.txt
